@@ -1,0 +1,6 @@
+[submodule "api"]
+	path = api
+	url = https://github.com/AdrianDajakaj/go-ecommerce-api.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/AdrianDajakaj/react-ecommerce-client.git
