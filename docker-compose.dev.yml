@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  api-dev:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ecommerce-api-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/app/src:ro
+      - ./api/assets:/app/assets:ro
+      - ./api/ecommerce.db:/app/data/ecommerce.db
+    environment:
+      - PORT=8080
+      - DB_PATH=/app/data/ecommerce.db
+      - GO_ENV=development
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: ecommerce-frontend-dev
+    ports:
+      - "3000:5173"
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080
+    depends_on:
+      - api-dev
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
