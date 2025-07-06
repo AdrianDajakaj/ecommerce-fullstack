@@ -15,7 +15,12 @@
     "test:frontend": "cypress run --spec 'cypress/e2e/frontend/**/*.cy.js'",
     "test:integration": "cypress run --spec 'cypress/e2e/integration/**/*.cy.js'",
     "test:all": "cypress run --spec 'cypress/e2e/**/*.cy.js'",
-    "browserstack": "browserstack-cypress run"
+    "test:browserstack": "browserstack-cypress run",
+    "test:browserstack:api": "browserstack-cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "test:browserstack:frontend": "browserstack-cypress run --spec 'cypress/e2e/frontend/**/*.cy.js'",
+    "test:browserstack:integration": "browserstack-cypress run --spec 'cypress/e2e/integration/**/*.cy.js'",
+    "browserstack:init": "browserstack-cypress init",
+    "browserstack:info": "browserstack-cypress info"
   },
   "keywords": [
     "cypress",
