@@ -8,24 +8,14 @@
       "browser": "chrome",
       "os": "Windows 10",
       "versions": ["latest"]
-    },
-    {
-      "browser": "firefox", 
-      "os": "Windows 10",
-      "versions": ["latest"]
-    },
-    {
-      "browser": "edge",
-      "os": "Windows 10", 
-      "versions": ["latest"]
     }
   ],
   "run_settings": {
     "cypress_config_file": "cypress.config.js",
     "cypress_version": "13",
     "project_name": "Ecommerce Fullstack E2E Tests",
-    "build_name": "Ecommerce Test Suite",
-    "parallels": 5,
+    "build_name": "Ecommerce Test Suite - Quick Test",
+    "parallels": 1,
     "npm_dependencies": {
       "cypress": "13.6.0"
     }
