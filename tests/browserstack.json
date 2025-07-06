@@ -1,0 +1,48 @@
+{
+  "auth": {
+    "username": "YOUR_BROWSERSTACK_USERNAME",
+    "access_key": "YOUR_BROWSERSTACK_ACCESS_KEY"
+  },
+  "browsers": [
+    {
+      "browser": "chrome",
+      "os": "Windows 10",
+      "versions": ["latest", "latest-1"]
+    },
+    {
+      "browser": "firefox", 
+      "os": "Windows 10",
+      "versions": ["latest"]
+    },
+    {
+      "browser": "edge",
+      "os": "Windows 10", 
+      "versions": ["latest"]
+    },
+    {
+      "browser": "safari",
+      "os": "OS X Monterey",
+      "versions": ["latest"]
+    },
+    {
+      "browser": "chrome",
+      "os": "OS X Monterey",
+      "versions": ["latest"]
+    }
+  ],
+  "run_settings": {
+    "cypress_config_file": "cypress.config.js",
+    "cypress_version": "13",
+    "project_name": "Ecommerce Fullstack E2E Tests",
+    "build_name": "Ecommerce Test Suite",
+    "parallels": 5,
+    "npm_dependencies": {
+      "cypress": "13.6.0"
+    }
+  },
+  "connection_settings": {
+    "local": false,
+    "local_identifier": null
+  },
+  "disable_usage_reporting": false
+}

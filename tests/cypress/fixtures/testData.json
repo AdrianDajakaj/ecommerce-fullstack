@@ -1,0 +1,232 @@
+{
+  "testUsers": {
+    "regular": {
+      "name": "Test",
+      "surname": "User", 
+      "email": "testuser@example.com",
+      "password": "testpassword123"
+    },
+    "admin": {
+      "name": "Admin",
+      "surname": "User",
+      "email": "admin@example.com", 
+      "password": "adminpassword123"
+    },
+    "invalid": {
+      "email": "invalid@example.com",
+      "password": "wrongpassword"
+    }
+  },
+  
+  "testProducts": {
+    "valid": {
+      "name": "Test iPhone 16 Pro",
+      "description": "Latest iPhone model with advanced features",
+      "price": 1299.99,
+      "category_id": 1,
+      "stock": 50
+    },
+    "minimal": {
+      "name": "Basic Product",
+      "description": "Simple test product",
+      "price": 10,
+      "category_id": 1,
+      "stock": 1
+    },
+    "expensive": {
+      "name": "Premium MacBook Pro",
+      "description": "High-end laptop for professionals",
+      "price": 2999.99,
+      "category_id": 2,
+      "stock": 10
+    },
+    "invalid": {
+      "name": "",
+      "description": "Invalid product",
+      "price": -10,
+      "category_id": 999,
+      "stock": -5
+    }
+  },
+  
+  "testCategories": {
+    "valid": {
+      "name": "Test Electronics",
+      "description": "Electronic devices and accessories"
+    },
+    "secondary": {
+      "name": "Test Computers",
+      "description": "Computers and laptops"
+    },
+    "invalid": {
+      "name": "",
+      "description": "Invalid category"
+    }
+  },
+  
+  "paymentMethods": [
+    "CREDIT_CARD",
+    "DEBIT_CARD", 
+    "PAYPAL",
+    "APPLE_PAY",
+    "GOOGLE_PAY",
+    "BLIK"
+  ],
+  
+  "orderStatuses": [
+    "PENDING",
+    "CONFIRMED",
+    "SHIPPED",
+    "DELIVERED",
+    "CANCELLED"
+  ],
+  
+  "searchFilters": {
+    "products": {
+      "byCategory": {
+        "category_id": 1
+      },
+      "byPriceRange": {
+        "price_min": 100,
+        "price_max": 1000
+      },
+      "byName": {
+        "name": "iPhone"
+      },
+      "combined": {
+        "category_id": 1,
+        "price_min": 500,
+        "price_max": 2000,
+        "name": "Pro"
+      }
+    },
+    "categories": {
+      "byName": {
+        "name": "Electronics"
+      },
+      "byParent": {
+        "parent_id": 1
+      }
+    },
+    "orders": {
+      "byStatus": {
+        "status": "PENDING"
+      },
+      "byUser": {
+        "user_id": 1
+      }
+    }
+  },
+  
+  "apiEndpoints": {
+    "auth": {
+      "register": "/users/register",
+      "login": "/users/login"
+    },
+    "users": {
+      "list": "/users",
+      "get": "/users/{id}",
+      "search": "/users/search",
+      "update": "/users/{id}",
+      "delete": "/users/{id}"
+    },
+    "categories": {
+      "list": "/categories",
+      "get": "/categories/{id}",
+      "subcategories": "/categories/{id}/subcategories",
+      "search": "/categories/search",
+      "create": "/categories",
+      "update": "/categories/{id}",
+      "delete": "/categories/{id}"
+    },
+    "products": {
+      "list": "/products",
+      "get": "/products/{id}",
+      "search": "/products/search",
+      "create": "/products",
+      "update": "/products/{id}",
+      "delete": "/products/{id}"
+    },
+    "cart": {
+      "get": "/cart",
+      "add": "/cart/add",
+      "updateItem": "/cart/item/{id}",
+      "removeItem": "/cart/item/{id}",
+      "clear": "/cart/clear",
+      "search": "/cart/search"
+    },
+    "orders": {
+      "create": "/orders",
+      "get": "/orders/{id}",
+      "list": "/orders",
+      "userOrders": "/orders/user",
+      "updateStatus": "/orders/{id}/status",
+      "cancel": "/orders/{id}/cancel",
+      "search": "/orders/search"
+    },
+    "health": "/health"
+  },
+  
+  "errorMessages": {
+    "unauthorized": "unauthorized",
+    "forbidden": "access denied", 
+    "notFound": "not found",
+    "badRequest": "invalid",
+    "invalidToken": "invalid token",
+    "invalidCredentials": "invalid credentials"
+  },
+  
+  "testScenarios": {
+    "cartWorkflow": {
+      "steps": [
+        "Register user",
+        "Login user", 
+        "Add products to cart",
+        "Update cart quantities",
+        "Remove items from cart",
+        "Create order",
+        "Verify order"
+      ]
+    },
+    "adminWorkflow": {
+      "steps": [
+        "Login as admin",
+        "Create category",
+        "Create product",
+        "Update product",
+        "Delete product",
+        "Manage orders"
+      ]
+    },
+    "unauthorizedAccess": {
+      "endpoints": [
+        "/users",
+        "/cart",
+        "/orders",
+        "/categories (POST/PUT/DELETE)",
+        "/products (POST/PUT/DELETE)"
+      ]
+    }
+  },
+  
+  "performanceThresholds": {
+    "apiResponseTime": 2000,
+    "pageLoadTime": 5000,
+    "imageLoadTime": 3000
+  },
+  
+  "browserConfigurations": {
+    "desktop": {
+      "viewportWidth": 1280,
+      "viewportHeight": 720
+    },
+    "tablet": {
+      "viewportWidth": 768,
+      "viewportHeight": 1024
+    },
+    "mobile": {
+      "viewportWidth": 375,
+      "viewportHeight": 667
+    }
+  }
+}

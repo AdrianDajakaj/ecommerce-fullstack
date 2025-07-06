@@ -1,0 +1,41 @@
+{
+  "name": "ecommerce-fullstack-tests",
+  "version": "1.0.0",
+  "description": "CypressJS test suite for ecommerce fullstack application",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:headless": "cypress run --headless",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "cy:run:firefox": "cypress run --browser firefox",
+    "cy:run:edge": "cypress run --browser edge",
+    "test": "cypress run",
+    "test:api": "cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "test:frontend": "cypress run --spec 'cypress/e2e/frontend/**/*.cy.js'",
+    "test:integration": "cypress run --spec 'cypress/e2e/integration/**/*.cy.js'",
+    "test:all": "cypress run --spec 'cypress/e2e/**/*.cy.js'",
+    "browserstack": "browserstack-cypress run"
+  },
+  "keywords": [
+    "cypress",
+    "e2e",
+    "testing",
+    "api",
+    "frontend",
+    "ecommerce",
+    "go",
+    "react",
+    "vite"
+  ],
+  "author": "Ecommerce Fullstack Team",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "browserstack-cypress-cli": "^1.31.1",
+    "@cypress/grep": "^4.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
