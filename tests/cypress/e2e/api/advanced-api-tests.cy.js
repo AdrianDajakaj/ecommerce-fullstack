@@ -27,8 +27,11 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       cy.loginUser(adminUser.email, adminUser.password).then((adminLoginResponse) => {
         adminToken = adminLoginResponse.body.token;
         
+        // Assertion 1: Admin login status
         expect(adminLoginResponse.status).to.equal(200);
+        // Assertion 2: Admin login returns token
         expect(adminLoginResponse.body).to.have.property('token');
+        // Assertion 3: Admin token is string
         expect(adminToken).to.be.a('string');
         
         return cy.registerUser(regularUser);
@@ -37,7 +40,9 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       }).then((regularLoginResponse) => {
         regularUserToken = regularLoginResponse.body.token;
         
+        // Assertion 4: Regular user login status
         expect(regularLoginResponse.status).to.equal(200);
+        // Assertion 5: Regular user token is string
         expect(regularUserToken).to.be.a('string');
         
         cy.log('✅ Both admin and regular user accounts ready');
@@ -48,8 +53,11 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
         };
         return cy.authenticatedApiRequest('POST', '/categories', categoryData, adminToken);
       }).then((categoryResponse) => {
+        // Assertion 6: Admin category creation status
         expect(categoryResponse.status).to.be.oneOf([200, 201]);
+        // Assertion 7: Category response has ID
         expect(categoryResponse.body).to.have.property('id');
+        // Assertion 8: Category response has name
         expect(categoryResponse.body).to.have.property('name');
         
         testCategory = categoryResponse.body;
@@ -62,6 +70,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
         
         return cy.authenticatedApiRequest('POST', '/categories', anotherCategory, regularUserToken);
       }).then((forbiddenResponse) => {
+        // Assertion 9: Regular user category creation denied
         expect(forbiddenResponse.status).to.equal(403);
         
         cy.log('✅ Regular user correctly denied category creation');
@@ -76,9 +85,13 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
         
         return cy.authenticatedApiRequest('POST', '/products', productData, adminToken);
       }).then((productResponse) => {
+        // Assertion 10: Admin product creation status
         expect(productResponse.status).to.be.oneOf([200, 201]);
+        // Assertion 11: Product response has ID
         expect(productResponse.body).to.have.property('id');
+        // Assertion 12: Product response has name
         expect(productResponse.body).to.have.property('name');
+        // Assertion 13: Product response has price
         expect(productResponse.body).to.have.property('price');
         
         testProduct = productResponse.body;
@@ -94,7 +107,9 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
         
         return cy.authenticatedApiRequest('PUT', `/products/${testProduct.id}`, updatedData, adminToken);
       }).then((updateResponse) => {
+        // Assertion 14: Admin product update status
         expect(updateResponse.status).to.equal(200);
+        // Assertion 15: Product name updated
         expect(updateResponse.body.name).to.include('Updated');
         
         cy.log('✅ Admin updated product successfully');
@@ -106,19 +121,23 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
         
         return cy.authenticatedApiRequest('PUT', `/products/${testProduct.id}`, userUpdateData, regularUserToken);
       }).then((forbiddenUpdateResponse) => {
+        // Assertion 16: Regular user product update denied
         expect(forbiddenUpdateResponse.status).to.equal(403);
         
         cy.log('✅ Regular user correctly denied product update');
         
         return cy.authenticatedApiRequest('GET', '/users', null, adminToken);
       }).then((usersResponse) => {
+        // Assertion 17: Admin users list access status
         expect(usersResponse.status).to.equal(200);
+        // Assertion 18: Users list is array
         expect(usersResponse.body).to.be.an('array');
         
         cy.log('✅ Admin can access users list');
         
         return cy.authenticatedApiRequest('GET', '/users', null, regularUserToken);
       }).then((forbiddenUsersResponse) => {
+        // Assertion 19: Regular user users list denied
         expect(forbiddenUsersResponse.status).to.equal(403);
         
         cy.log('✅ Regular user correctly denied access to users list');
@@ -160,10 +179,13 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       if (cartResponse.body.items && cartResponse.body.items.length > 0) {
         cartItems = cartResponse.body.items;
         
+        // Assertion 20: Cart has items
         expect(cartResponse.body.items.length).to.be.at.least(1);
         
         if (cartResponse.body.total_amount) {
+          // Assertion 21: Total amount is number
           expect(cartResponse.body.total_amount).to.be.a('number');
+          // Assertion 22: Total amount greater than zero
           expect(cartResponse.body.total_amount).to.be.greaterThan(0);
         }
         
@@ -177,6 +199,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       }
     }).then((updateResponse) => {
       if (cartItems.length > 0) {
+        // Assertion 23: Cart item update status
         expect(updateResponse.status).to.equal(200);
         
         cy.log('✅ Cart item quantity updated');
@@ -187,6 +210,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       return Promise.resolve({ status: 200 });
     }).then((removeResponse) => {
       if (cartItems.length > 0) {
+        // Assertion 24: Cart item removal status
         expect(removeResponse.status).to.be.oneOf([200, 204]);
         
         cy.log('✅ Item removed from cart');
@@ -196,6 +220,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       return Promise.resolve({ body: { items: [] } });
     }).then((updatedCartResponse) => {
       if (updatedCartResponse.body.items && updatedCartResponse.body.items.length > 0) {
+        // Assertion 25: Cart state updated after removal
         expect(updatedCartResponse.body.items.length).to.be.lessThan(cartItems.length);
         
         cy.log('✅ Cart state updated after item removal');
@@ -212,6 +237,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
     }).then((orderResponse) => {
       createdOrder = orderResponse.body;
       
+      // Assertion 26: Order response has ID
       expect(orderResponse.body).to.have.property('id');
       
       cy.log('✅ Order created from cart');
@@ -219,6 +245,7 @@ describe('API Test Suite - Advanced Operations (Tests 11-12)', () => {
       return cy.getCart(userToken);
     }).then((cartAfterOrderResponse) => {
       if (cartAfterOrderResponse.body.items) {
+        // Assertion 27: Cart state after order
         expect(cartAfterOrderResponse.body.items.length).to.be.at.most(cartItems.length);
       }
       

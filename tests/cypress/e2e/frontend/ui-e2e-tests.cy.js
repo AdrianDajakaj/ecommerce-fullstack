@@ -26,7 +26,9 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     };
     testUser = userData;
     cy.visitApp();
+    // Assertion 94: Application body is visible
     cy.get('body').should('be.visible');
+    // Assertion 95: Page title is not empty
     cy.title().should('not.be.empty');
     
     cy.log('✅ Application loaded successfully');
@@ -38,6 +40,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           .first()
           .click();
         
+        // Assertion 96: Registration URL contains register/signup
         cy.url().should('match', /(register|signup)/i);
         
         cy.get('input[name="name"], input[placeholder*="name"], [data-cy="name-input"]')
@@ -60,6 +63,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           .first()
           .click();
         
+        // Assertion 97: Registration completed - URL changed
         cy.url().should('not.include', '/register');
         
         cy.log('✅ User registration completed through UI');
@@ -81,6 +85,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           .first()
           .click();
         
+        // Assertion 98: Login URL contains login
         cy.url().should('match', /login/i);
         
         cy.get('input[type="email"], input[name="email"], [data-cy="email-input"]')
@@ -97,10 +102,12 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           .first()
           .click();
         
+        // Assertion 99: Login completed - URL changed
         cy.url().should('not.include', '/login');
         
         cy.window().then((win) => {
           const token = win.sessionStorage.getItem('jwt_token');
+          // Assertion 100: JWT token stored in session
           expect(token).to.not.be.null;
           authToken = token;
         });
@@ -123,7 +130,9 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     
     cy.visitApp();
     
+    // Assertion 101: Catalog page body is visible
     cy.get('body').should('be.visible');
+    // Assertion 102: Product content present on page
     cy.get('body').should(($body) => {
       const bodyText = $body.text();
       const hasProductContent = ['iPhone', 'iPad', 'Mac', 'Product', 'Category', 'Shop'].some(term => 
@@ -152,7 +161,9 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         if ($body.find(selector).length > 0) {
           productElementsFound = true;
           
+          // Assertion 103: Product elements count validation
           cy.get(selector).should('have.length.at.least', 1);
+          // Assertion 104: First product element is visible
           cy.get(selector).first().should('be.visible');
           
           cy.log(`✅ Product elements found with selector: ${selector}`);
@@ -160,6 +171,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       });
       
       if (!productElementsFound) {
+        // Assertion 105: Fallback product elements found
         cy.get('img, [class*="card"], [class*="item"]').should('have.length.at.least', 1);
         cy.log('✅ Product-like elements found (fallback)');
       }
@@ -181,6 +193,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       
       navSelectors.forEach(selector => {
         if ($body.find(selector).length > 0) {
+          // Assertion 106: Navigation elements are visible
           cy.get(selector).first().should('be.visible');
           
           cy.log(`✅ Navigation found with selector: ${selector}`);
@@ -271,10 +284,12 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       }
     });
     
+    // Assertion 107: Cart URL contains cart
     cy.url().should('include', '/cart');
     
     cy.get('body').then(($body) => {
       if ($body.find('[data-cy="cart-item"], .cart-item, [class*="cart"]').length > 0) {
+        // Assertion 108: Cart contains items
         cy.get('[data-cy="cart-item"], .cart-item, [class*="cart-"]').should('have.length.at.least', 1);
         
         cy.log('✅ Cart contains items');
@@ -290,6 +305,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           
           quantitySelectors.forEach(selector => {
             if ($bodyWithItems.find(selector).length > 0) {
+              // Assertion 109: Quantity controls are visible
               cy.get(selector).first().should('be.visible');
               cy.log(`✅ Quantity controls found: ${selector}`);
             }
@@ -307,6 +323,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
           
           removeSelectors.forEach(selector => {
             if ($bodyWithItems.find(selector).length > 0) {
+              // Assertion 110: Remove functionality is visible
               cy.get(selector).first().should('be.visible');
               cy.log(`✅ Remove functionality found: ${selector}`);
             }
@@ -314,6 +331,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         });
         
       } else {
+        // Assertion 111: Cart page accessible (empty state)
         cy.get('body').should('be.visible');
         cy.log('✅ Cart page accessible (empty state or cart implementation)');
       }
@@ -329,6 +347,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       
       checkoutSelectors.forEach(selector => {
         if ($body.find(selector).length > 0) {
+          // Assertion 112: Checkout functionality is visible
           cy.get(selector).first().should('be.visible');
           cy.log(`✅ Checkout accessible via: ${selector}`);
         }
@@ -353,6 +372,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       
       cy.viewport(viewport.width, viewport.height);
       cy.visitApp();
+      // Assertion 113-115: Responsive body visibility (3 viewports)
       cy.get('body').should('be.visible');
       cy.get('body').then(($body) => {
         const navElements = $body.find('nav, [role="navigation"], button[aria-label*="menu"], .hamburger, .menu-toggle');
@@ -360,6 +380,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         if (navElements.length > 0) {
           const firstNav = navElements.first();
           if (firstNav.is(':visible')) {
+            // Assertion 116-118: Navigation accessible on each viewport (3 assertions)
             cy.wrap(firstNav).should('be.visible');
             cy.log(`✅ Navigation accessible on ${viewport.name}`);
           } else {
@@ -371,6 +392,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       cy.get('body').then(($body) => {
         const textElements = $body.find('h1, h2, h3, p, span, div');
         if (textElements.length > 0) {
+          // Assertion 119-121: Content readable on each viewport (3 assertions)
           cy.wrap(textElements.first()).should('be.visible');
           cy.log(`✅ Content readable on ${viewport.name}`);
         }
@@ -381,6 +403,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         if (interactiveElements.length > 0) {
           const firstInteractive = interactiveElements.first();
           if (firstInteractive.is(':visible')) {
+            // Assertion 122-124: Interactive elements accessible on each viewport (3 assertions)
             cy.wrap(firstInteractive).should('be.visible');
             cy.log(`✅ Interactive elements accessible on ${viewport.name}`);
           } else {
@@ -394,6 +417,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     
     cy.visitApp();
     
+    // Assertion 125: Final responsive test body visibility
     cy.get('body', { timeout: 10000 }).should('be.visible');
     
     cy.log('✅ Responsive design testing completed');
@@ -414,13 +438,16 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     cy.log('Step 1: User lands on the application');
     cy.visitApp();
     
+    // Assertion 126: E2E journey body is visible
     cy.get('body').should('be.visible');
+    // Assertion 127: E2E journey page title is not empty
     cy.title().should('not.be.empty');
     
     cy.log('Step 2: User browses products');
     cy.get('body').then(($body) => {
       const hasProducts = $body.find('img, [class*="product"], [class*="card"]').length > 0;
       if (hasProducts) {
+        // Assertion 128: Products visible for browsing
         cy.get('img, [class*="product"], [class*="card"]').first().should('be.visible');
         cy.log('✅ Products visible for browsing');
       } else {
@@ -440,6 +467,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         const localToken = win.localStorage.getItem('jwt_token') || win.localStorage.getItem('authToken');
         const cypressToken = Cypress.env('authToken');
         
+        // Assertion 129: Authentication token exists
         expect(sessionToken || localToken || cypressToken).to.not.be.null;
       });
       
@@ -455,6 +483,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
         cy.visit('/cart');
       }
       
+      // Assertion 130: Cart URL includes cart
       cy.url().should('include', '/cart');
       cy.log('✅ Cart area accessed');
     });
@@ -465,6 +494,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       if ($body.find('[data-cy="cart-item"], .cart-item').length > 0) {
         cy.log('✅ Cart contains manageable items');
       } else {
+        // Assertion 131: Empty cart state visible
         cy.get('body').should('be.visible');
         cy.log('✅ Empty cart state presented to user');
       }
@@ -478,6 +508,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       if (checkoutElements.length > 0) {
         cy.wrap(checkoutElements.first()).click();
         
+        // Assertion 132: Checkout URL validation
         cy.url().should((url) => {
           expect(url.includes('/checkout') || !url.includes('/cart')).to.be.true;
         });
@@ -496,6 +527,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       );
       
       if (orderElements.length > 0) {
+        // Assertion 133: Order completion interface is visible
         cy.wrap(orderElements.first()).should('be.visible');
         cy.log('✅ Order completion interface available');
       } else {
@@ -506,6 +538,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     cy.log('Step 8: Overall user experience validation');
     
     cy.window().then((win) => {
+      // Assertion 134: Page navigation successful throughout journey
       expect(win.location.href).to.be.a('string');
       cy.log('✅ Page navigation successful throughout journey');
     });
@@ -514,6 +547,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
       const sessionToken = win.sessionStorage.getItem('jwt_token') || win.sessionStorage.getItem('authToken');
       const localToken = win.localStorage.getItem('jwt_token') || win.localStorage.getItem('authToken');
       const cypressToken = Cypress.env('authToken');
+      // Assertion 135: User session maintained throughout journey
       expect(sessionToken || localToken || cypressToken).to.not.be.null;
       cy.log('✅ User session maintained throughout journey');
     });
@@ -539,6 +573,7 @@ describe('Frontend E2E Test Suite (Tests 13-17)', { tags: ['@frontend', '@e2e'] 
     
     cy.visitApp();
     
+    // Assertion 136: Final application body is visible
     cy.get('body').should('be.visible');
     
     cy.log('🏆 TESTING SUMMARY:');

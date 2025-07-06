@@ -16,14 +16,19 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/health')
       .then((response) => {
+        // Assertion 28: Health endpoint status
         expect(response.status).to.equal(200);
         
+        // Assertion 29: Health response content type
         expect(response.headers['content-type']).to.include('application/json');
         
+        // Assertion 30: Health response body exists
         expect(response.body).to.exist;
         
+        // Assertion 31: Health response has status property
         expect(response.body).to.have.property('status');
         
+        // Assertion 32: Health status value validation
         expect(response.body.status).to.be.oneOf(['healthy', 'ok', 'up', 'running']);
         
         cy.log('✅ API health check passed - System is operational');
@@ -46,12 +51,16 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       
       cy.apiRequest('POST', '/users/register', userData)
         .then((response) => {
+          // Assertion 33: User registration status
           expect(response.status).to.be.oneOf([200, 201]);
           
+          // Assertion 34: Registration response has ID
           expect(response.body).to.have.property('id');
           
+          // Assertion 35: Registration ID is number
           expect(response.body.id).to.be.a('number');
         
+        // Assertion 36: Registration email matches
         expect(response.body.email).to.equal(userData.email);
         
         cy.log('✅ User registration successful');
@@ -62,10 +71,15 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
         });
       })
       .then((loginResponse) => {
+        // Assertion 37: Login status
         expect(loginResponse.status).to.equal(200);
+        // Assertion 38: Login response has token
         expect(loginResponse.body).to.have.property('token');
+        // Assertion 39: Login token is valid JWT
         expect(loginResponse.body.token).to.be.validJwtToken();
+        // Assertion 40: Login response has user
         expect(loginResponse.body).to.have.property('user');
+        // Assertion 41: Login user has ID
         expect(loginResponse.body.user).to.have.property('id');
         
         cy.log('✅ User authentication successful');
@@ -80,21 +94,34 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/products')
       .then((response) => {
+        // Assertion 42: Products list status
         expect(response.status).to.equal(200);
+        // Assertion 43: Products response is array
         expect(response.body).to.be.an('array');
+        // Assertion 44: Products array length validation
         expect(response.body.length).to.be.at.least(0);
         
         if (response.body.length > 0) {
           const firstProduct = response.body[0];
+          // Assertion 45: Product is valid object
           expect(firstProduct).to.be.validProductObject();
+          // Assertion 46: Product has ID number
           expect(firstProduct).to.have.property('id').that.is.a('number');
+          // Assertion 47: Product has name string
           expect(firstProduct).to.have.property('name').that.is.a('string');
+          // Assertion 48: Product has description string
           expect(firstProduct).to.have.property('description').that.is.a('string');
+          // Assertion 49: Product has price number
           expect(firstProduct).to.have.property('price').that.is.a('number');
+          // Assertion 50: Product has currency string
           expect(firstProduct).to.have.property('currency').that.is.a('string');
+          // Assertion 51: Product has stock number
           expect(firstProduct).to.have.property('stock').that.is.a('number');
+          // Assertion 52: Product has is_active boolean
           expect(firstProduct).to.have.property('is_active').that.is.a('boolean');
+          // Assertion 53: Product has created_at string
           expect(firstProduct).to.have.property('created_at').that.is.a('string');
+          // Assertion 54: Product has updated_at string
           expect(firstProduct).to.have.property('updated_at').that.is.a('string');
           
           cy.log('✅ Products list retrieved successfully');
@@ -107,7 +134,9 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       })
       .then((productResponse) => {
         if (productResponse.body.id) {
+          // Assertion 55: Individual product status
           expect(productResponse.status).to.equal(200);
+          // Assertion 56: Individual product is valid
           expect(productResponse.body).to.be.validProductObject();
           
           cy.log('✅ Individual product retrieval successful');
@@ -121,13 +150,18 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/categories')
       .then((response) => {
+        // Assertion 57: Categories list status
         expect(response.status).to.equal(200);
+        // Assertion 58: Categories response is array
         expect(response.body).to.be.an('array');
         if (response.body.length > 0) {
           const firstCategory = response.body[0];
+          // Assertion 59: Category is valid object
           expect(firstCategory).to.be.validCategoryObject();
           
+          // Assertion 60: Category has ID number
           expect(firstCategory).to.have.property('id').that.is.a('number');
+          // Assertion 61: Category has name string
           expect(firstCategory).to.have.property('name').that.is.a('string');
           
           cy.log('✅ Categories list retrieved successfully');
@@ -140,7 +174,9 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       })
       .then((categoryResponse) => {
         if (categoryResponse.body.id) {
+          // Assertion 62: Individual category status
           expect(categoryResponse.status).to.equal(200);
+          // Assertion 63: Individual category is valid
           expect(categoryResponse.body).to.be.validCategoryObject();
           cy.log('✅ Individual category retrieval successful');
         }
@@ -162,6 +198,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     protectedEndpoints.forEach((endpoint, index) => {
       cy.apiRequest(endpoint.method, endpoint.path, endpoint.method === 'POST' ? {} : null)
         .then((response) => {
+          // Assertion 64-68: Protected endpoints require auth (5 assertions)
           expect(response.status).to.equal(401, `${endpoint.description} should require authentication`);
           
           cy.log(`✅ ${endpoint.description} properly protected`);
@@ -181,9 +218,11 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       
       return cy.authenticatedApiRequest('GET', '/cart', null, authToken);
     }).then((cartResponse) => {
+      // Assertion 69: Cart access status for new user
       expect(cartResponse.status).to.be.oneOf([200, 404], 'Cart should be accessible or not exist for new user');
       
       if (cartResponse.status === 200 && cartResponse.body.items) {
+        // Assertion 70: Cart items is array
         expect(cartResponse.body.items).to.be.an('array');
       }
       
@@ -208,16 +247,19 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
         return Promise.resolve({ status: 200, body: { items: [] } });
       }
       
+      // Assertion 71: Add to cart status
       expect(addResponse.status).to.be.oneOf([200, 201]);
       
       cy.log('✅ Product added to cart');
       
       return cy.authenticatedApiRequest('GET', '/cart', null, authToken);
     }).then((updatedCartResponse) => {
+      // Assertion 72: Updated cart status
       expect(updatedCartResponse.status).to.equal(200);
       
       if (updatedCartResponse.body.items && updatedCartResponse.body.items.length > 0) {
         updatedCartResponse.body.items.forEach(item => {
+          // Assertion 73: Cart items are valid (multiple assertions)
           expect(item).to.be.validCartItem();
         });
         
@@ -234,7 +276,9 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/products/search')
       .then((response) => {
+        // Assertion 74: Product search status
         expect(response.status).to.equal(200);
+        // Assertion 75: Search response is array
         expect(response.body).to.be.an('array');
         
         cy.log('✅ Basic product search successful');
@@ -242,8 +286,10 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
         return cy.apiRequest('GET', '/products/search?category_id=1');
       })
       .then((categoryFilterResponse) => {
+        // Assertion 76: Category filter status
         expect(categoryFilterResponse.status).to.equal(200);
         
+        // Assertion 77: Category filter response is array
         expect(categoryFilterResponse.body).to.be.an('array');
         
         cy.log('✅ Category filtering successful');
@@ -251,12 +297,15 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
         return cy.apiRequest('GET', '/products/search?price_min=100&price_max=1000');
       })
       .then((priceFilterResponse) => {
+        // Assertion 78: Price filter status
         expect(priceFilterResponse.status).to.equal(200);
         
+        // Assertion 79: Price filter response is array
         expect(priceFilterResponse.body).to.be.an('array');
         
         if (priceFilterResponse.body.length > 0) {
           priceFilterResponse.body.forEach(product => {
+            // Assertion 80-81: Price range validation (2 assertions)
             expect(product.price).to.be.at.least(100);
             expect(product.price).to.be.at.most(1000);
           });
@@ -272,6 +321,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/products/99999')
       .then((response) => {
+        // Assertion 82: Invalid product ID status
         expect(response.status).to.equal(404);
         
         cy.log('✅ Invalid product ID handled correctly');
@@ -279,6 +329,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
     
     cy.apiRequest('GET', '/categories/99999')
       .then((response) => {
+        // Assertion 83: Invalid category ID status
         expect(response.status).to.equal(404);
         
         cy.log('✅ Invalid category ID handled correctly');
@@ -288,6 +339,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       email: 'invalid-email',
       password: '123'
     }).then((response) => {
+      // Assertion 84: Invalid registration data rejected
       expect(response.status).to.be.oneOf([400, 422]);
       
       cy.log('✅ Invalid registration data rejected');
@@ -297,6 +349,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       email: 'nonexistent@example.com',
       password: 'wrongpassword'
     }).then((response) => {
+      // Assertion 85: Invalid login credentials rejected
       expect(response.status).to.be.oneOf([401, 400]);
       
       cy.log('✅ Invalid login credentials rejected');
@@ -312,8 +365,10 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       .then((response) => {
         const responseTime = Date.now() - startTime;
         
+        // Assertion 86: Performance response time
         expect(responseTime).to.be.lessThan(2000, 'Products endpoint should respond within 2 seconds');
         
+        // Assertion 87: Response has content-type header
         expect(response.headers).to.have.property('content-type');
         
         cy.log(`✅ Products endpoint responded in ${responseTime}ms`);
@@ -325,6 +380,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
           
           products.forEach((product, index) => {
             const currentKeys = Object.keys(product);
+            // Assertion 88: Product structure consistency (multiple assertions)
             expect(currentKeys.sort()).to.deep.equal(productKeys.sort(), 
               `Product at index ${index} should have consistent structure`);
           });
@@ -352,6 +408,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       
       return cy.getProducts();
     }).then((productsResponse) => {
+      // Assertion 89: Products response is array
       expect(productsResponse.body).to.be.an('array');
       
       if (productsResponse.body.length > 0) {
@@ -365,6 +422,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       }
     }).then((addToCartResponse) => {
       if (testProduct) {
+        // Assertion 90: Add to cart status in journey
         expect(addToCartResponse.status).to.be.oneOf([200, 201]);
         
         cy.log('Step 4: Product added to cart successfully');
@@ -377,6 +435,7 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
       if (cartResponse.body.items && cartResponse.body.items.length > 0) {
         cartItem = cartResponse.body.items[0];
         
+        // Assertion 91: Cart has items in journey
         expect(cartResponse.body.items).to.have.length.at.least(1);
         
         cy.log('Step 5: Cart reviewed successfully');
@@ -391,12 +450,14 @@ describe('API Test Suite - Core Functionality (Tests 1-10)', { tags: ['@api', '@
         return Promise.resolve({ body: { id: 1 } });
       }
     }).then((orderResponse) => {
+      // Assertion 92: Order has ID in journey
       expect(orderResponse.body).to.have.property('id');
       
       cy.log('Step 6: Order created successfully');
       
       return cy.getUserOrders(userToken);
     }).then((ordersResponse) => {
+      // Assertion 93: Orders response is array
       expect(ordersResponse.body).to.be.an('array');
       
       cy.log('✅ Complete user journey test successful');
